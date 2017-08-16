@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Remove Blocks</title>
+<meta charset='utf-8'>
+<meta content='IE=Edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<link rel="stylesheet" media="all" href="../RemoveBlocks/bootstrap.css" />
+
+
+<style>
+input
+{
+text-align:center;
+}
+
+h1
+{
+margin-left:10px;
+}
+
+#start, #_NewGame, #about
+{
+width:120px;
+    background:white; 
+    border:1px solid black;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+    text-align:center;
+}
+
+#about,#_NewGame
+{
+ margin-right:40px;
+}
+
+#pts
+{
+margin-right:20px;
+}
+
+.field
+{
+width:752px;
+height:502px;
+border:1px solid #000;
+margin-top:20px;
+float:left;
+margin-left:10px;
+margin-right:110px;
+}
+
+#record
+{
+width:385px;
+height:502px;
+border:1px solid #000;
+margin-top:20px;
+margin-right:70px;
+float:left;
+font-size:32px;
+text-align:center;
+}
+
+.buttons
+{
+float:left;
+margin-left:10px;
+display:inline-break;
+}
+.info
+{
+float:center;
+}
+</style>
+<script>
+'use strict'
+
+var points=0; //Кол-во очков игрока
+var seconds = 60; //Время (в секундах)
+
+var Color=["red","green","blue","gold","magenta"]; //Цвета кубиков
+var Removed=new Array(); //Массив "убранных кубиков"
+
+function Start()//Начало Игры
+{
+  var StartPause=document.getElementById("start");
+  
+  if(StartPause.value=="Start") // Старт
+   {
+       StartPause.value="Pause";
+       var gameField=document.getElementById('field_id');
+       for(var i=0;i<150;i++) //Создаём кубики
+       {
+        var newBlock = document.createElement('button');
+        newBlock.id="block"+(i+1);
+	newBlock.onclick=function(){IncPoints(this.id);};
+        newBlock.style.backgroundColor=Color[Math.round(Math.random()*4)];
+	newBlock.style.width="50px";
+        newBlock.style.height="50px";
+        newBlock.style.border="2px solid black";
+        newBlock.style.fontWeight="bold";
+        newBlock.style.outline="none";
+	newBlock.style.float="left";
+	gameField.appendChild(newBlock);
+       }
+       seconds=60; //Устанавливаем время
+       TIMER(); // Включаем таймер
+   }
+   else 
+   {
+       if(StartPause.value=="Resume") // Продолжить
+       {
+          StartPause.value="Pause";
+       }
+       else // Пауза
+       {
+         StartPause.value="Resume";
+       }
+   }
+}
+
+function IncPoints(id)//Нажатие на кубик
+{
+     var blockColor=document.getElementById(id);
+     var btn=document.getElementById("start").value;
+      
+      // Добавление очков
+      
+      if(blockColor.style.backgroundColor!="white" && btn!="Resume" && seconds>=0) 
+      {
+         switch(blockColor.style.backgroundColor) 
+	 {
+	  case "red":points+=1;break;
+	  case "magenta":points+=2;break;
+	  case "green":points+=5;break;
+	  case "blue":points+=10;break;
+	  case "gold":points+=20;break;
+	  default:break;
+	 }
+        document.getElementById("pts").value=points;
+	
+	//Проверка надриси на кубиках 
+	
+	if(blockColor.innerHTML!="") 
+	 {
+	  seconds+=parseInt(blockColor.innerHTML);
+          blockColor.innerHTML="";	  
+	 }
+	 
+        blockColor.style.backgroundColor="white";
+	blockColor.style.border="2px solid white";
+	
+        Removed.push(id);
+	
+      }
+}
+
+function NewGame() //Новая игра
+{
+       for(var i=0;i<150;i++) // Очищаем игровое поле
+       {
+        document.getElementById("block"+(i+1)).parentNode.removeChild(document.getElementById("block"+(i+1)));  
+       }
+       
+       // Устанавливаем начальные значения
+       seconds=-1;
+       document.getElementById("timer").value="01:00";
+       document.getElementById("start").value="Start";
+       document.getElementById("pts").value=points=0;
+}
+
+function TIMER()//Таймер 
+{
+    var StartPause=document.getElementById("start");
+    var TableResult=document.getElementById("record");
+    
+    function tick() 
+    {
+        var counter = document.getElementById("timer");
+	
+        if(seconds>0&&StartPause.value=="Pause") // Обратный отсчёт
+	{
+	seconds--;
+        counter.value = (seconds/60 < 10 ? "0" : "") + String(parseInt(seconds/60))+ ":"+ (seconds%60 < 10 ? "0" : "") + String(seconds%60);
+	}
+	
+        if( seconds >= 0 ) // Обратный отсчёт, если время не закончилось
+	{
+            setTimeout(tick, 1000);
+        }
+	
+	if(seconds==0) // Конец игры
+	{
+            alert("Game Over");
+	    var Name = prompt("Score: "+points, "Player");
+	    TableResult.innerHTML+=" <br/> "+Name+": "+points;
+	    seconds=-1;
+        }
+	
+	if(seconds%6==0 && Removed.length>=2) // Добавление новых кубиков во время игры
+	{
+	
+	  for(var i=0;i<Math.round(Math.random()*2);i++)
+	  {
+	    var ind=Math.round(Math.random()*Removed.length);
+	    var blockColor=document.getElementById(Removed[ind]);
+            blockColor.style.backgroundColor=Color[Math.round(Math.random()*4)];
+	    blockColor.style.border="2px solid black";
+            Removed.splice(ind,1);
+	    
+            if(Math.round(Math.random()*1)==1)
+            {
+	      blockColor.innerHTML=Math.round(Math.random()*10)-5;
+            }	
+	    
+	  }
+	  
+	}
+	
+	if(seconds<0) // Сбросить таймер в начальное значение
+	{
+	    counter.value="01:00";
+        }
+    }
+    
+    if(seconds>=0) // Обратный отсчёт, если время не закончилось
+    {
+       tick();
+    }
+}
+
+function AboutGame()//Переход к описанию игры
+{
+  var forma=document.getElementById('forma');
+  forma.action="../RemoveBlocks/About.html";
+  //var win = window.open("../RemoveBlocks/About.html", '_blank');
+  //win.focus();
+}
+</script>
+
+</head>
+<body>
+<h1>Remove Blocks</h1>
+<br/>
+
+<div class="buttons" >
+<form id="forma" method="GET">
+<input type="submit" value="How to Play" id="about" onclick="AboutGame()">
+<input type="button" value="Start" id="start" onclick="Start()">
+<input type="button" value="New Game" id="_NewGame" onclick="NewGame()">
+</form>
+</div>
+
+<div class="info">
+<label>Points</label>
+<input id="pts" type="text" value="0" size="5" readonly>
+<label>Time Left</label>
+<input type="text" value="01:00" size="5" id="timer" readonly>
+
+</div>
+<div class="field" id="field_id"> </div>
+<div id="record"><u><b>Result Table</b></u><br/>
+</div>
+</body>
+</html>
