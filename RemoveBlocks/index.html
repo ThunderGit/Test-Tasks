@@ -1,9 +1,8 @@
 
 <!DOCTYPE html>
-<html lang='en'>
 <head>
 <title>Remove Blocks</title>
-<meta charset='utf-8'>
+<meta charset='utf-8'/>
 <meta content='IE=Edge,chrome=1' http-equiv='X-UA-Compatible'>
 <meta content='width=device-width, initial-scale=1.0' name='viewport'>
 <link rel="stylesheet" media="all" href="../RemoveBlocks/bootstrap.css" />
@@ -78,21 +77,21 @@ float:center;
 <script>
 'use strict'
 
-var points=0; //Кол-во очков игрока
-var seconds = 60; //Время (в секундах)
+var points=0; //РљРѕР»-РІРѕ РѕС‡РєРѕРІ РёРіСЂРѕРєР°
+var seconds = 60; //Р’СЂРµРјСЏ (РІ СЃРµРєСѓРЅРґР°С…)
 
-var Color=["red","green","blue","gold","magenta"]; //Цвета кубиков
-var Removed=new Array(); //Массив "убранных кубиков"
+var Color=["red","green","blue","gold","magenta"]; //Р¦РІРµС‚Р° РєСѓР±РёРєРѕРІ
+var Removed=new Array(); //РњР°СЃСЃРёРІ "СѓР±СЂР°РЅРЅС‹С… РєСѓР±РёРєРѕРІ"
 
-function Start()//Начало Игры
+function Start()//РќР°С‡Р°Р»Рѕ РРіСЂС‹
 {
   var StartPause=document.getElementById("start");
   
-  if(StartPause.value=="Start") // Старт
+  if(StartPause.value=="Start") // РЎС‚Р°СЂС‚
    {
        StartPause.value="Pause";
        var gameField=document.getElementById('field_id');
-       for(var i=0;i<150;i++) //Создаём кубики
+       for(var i=0;i<150;i++) //РЎРѕР·РґР°С‘Рј РєСѓР±РёРєРё
        {
         var newBlock = document.createElement('button');
         newBlock.id="block"+(i+1);
@@ -106,28 +105,28 @@ function Start()//Начало Игры
 	newBlock.style.float="left";
 	gameField.appendChild(newBlock);
        }
-       seconds=60; //Устанавливаем время
-       TIMER(); // Включаем таймер
+       seconds=60; //РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РІСЂРµРјСЏ
+       TIMER(); // Р’РєР»СЋС‡Р°РµРј С‚Р°Р№РјРµСЂ
    }
    else 
    {
-       if(StartPause.value=="Resume") // Продолжить
+       if(StartPause.value=="Resume") // РџСЂРѕРґРѕР»Р¶РёС‚СЊ
        {
           StartPause.value="Pause";
        }
-       else // Пауза
+       else // РџР°СѓР·Р°
        {
          StartPause.value="Resume";
        }
    }
 }
 
-function IncPoints(id)//Нажатие на кубик
+function IncPoints(id)//РќР°Р¶Р°С‚РёРµ РЅР° РєСѓР±РёРє
 {
      var blockColor=document.getElementById(id);
      var btn=document.getElementById("start").value;
       
-      // Добавление очков
+      // Р”РѕР±Р°РІР»РµРЅРёРµ РѕС‡РєРѕРІ
       
       if(blockColor.style.backgroundColor!="white" && btn!="Resume" && seconds>=0) 
       {
@@ -142,7 +141,7 @@ function IncPoints(id)//Нажатие на кубик
 	 }
         document.getElementById("pts").value=points;
 	
-	//Проверка надриси на кубиках 
+	//РџСЂРѕРІРµСЂРєР° РЅР°РґСЂРёСЃРё РЅР° РєСѓР±РёРєР°С… 
 	
 	if(blockColor.innerHTML!="") 
 	 {
@@ -158,21 +157,21 @@ function IncPoints(id)//Нажатие на кубик
       }
 }
 
-function NewGame() //Новая игра
+function NewGame() //РќРѕРІР°СЏ РёРіСЂР°
 {
-       for(var i=0;i<150;i++) // Очищаем игровое поле
+       for(var i=0;i<150;i++) // РћС‡РёС‰Р°РµРј РёРіСЂРѕРІРѕРµ РїРѕР»Рµ
        {
         document.getElementById("block"+(i+1)).parentNode.removeChild(document.getElementById("block"+(i+1)));  
        }
        
-       // Устанавливаем начальные значения
+       // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РЅР°С‡Р°Р»СЊРЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ
        seconds=-1;
        document.getElementById("timer").value="01:00";
        document.getElementById("start").value="Start";
        document.getElementById("pts").value=points=0;
 }
 
-function TIMER()//Таймер 
+function TIMER()//РўР°Р№РјРµСЂ 
 {
     var StartPause=document.getElementById("start");
     var TableResult=document.getElementById("record");
@@ -181,18 +180,18 @@ function TIMER()//Таймер
     {
         var counter = document.getElementById("timer");
 	
-        if(seconds>0&&StartPause.value=="Pause") // Обратный отсчёт
+        if(seconds>0&&StartPause.value=="Pause") // РћР±СЂР°С‚РЅС‹Р№ РѕС‚СЃС‡С‘С‚
 	{
 	seconds--;
         counter.value = (seconds/60 < 10 ? "0" : "") + String(parseInt(seconds/60))+ ":"+ (seconds%60 < 10 ? "0" : "") + String(seconds%60);
 	}
 	
-        if( seconds >= 0 ) // Обратный отсчёт, если время не закончилось
+        if( seconds >= 0 ) // РћР±СЂР°С‚РЅС‹Р№ РѕС‚СЃС‡С‘С‚, РµСЃР»Рё РІСЂРµРјСЏ РЅРµ Р·Р°РєРѕРЅС‡РёР»РѕСЃСЊ
 	{
             setTimeout(tick, 1000);
         }
 	
-	if(seconds==0) // Конец игры
+	if(seconds==0) // РљРѕРЅРµС† РёРіСЂС‹
 	{
             alert("Game Over");
 	    var Name = prompt("Score: "+points, "Player");
@@ -200,7 +199,7 @@ function TIMER()//Таймер
 	    seconds=-1;
         }
 	
-	if(seconds%6==0 && Removed.length>=2) // Добавление новых кубиков во время игры
+	if(seconds%6==0 && Removed.length>=2) // Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІС‹С… РєСѓР±РёРєРѕРІ РІРѕ РІСЂРµРјСЏ РёРіСЂС‹
 	{
 	
 	  for(var i=0;i<Math.round(Math.random()*2);i++)
@@ -220,19 +219,19 @@ function TIMER()//Таймер
 	  
 	}
 	
-	if(seconds<0) // Сбросить таймер в начальное значение
+	if(seconds<0) // РЎР±СЂРѕСЃРёС‚СЊ С‚Р°Р№РјРµСЂ РІ РЅР°С‡Р°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ
 	{
 	    counter.value="01:00";
         }
     }
     
-    if(seconds>=0) // Обратный отсчёт, если время не закончилось
+    if(seconds>=0) // РћР±СЂР°С‚РЅС‹Р№ РѕС‚СЃС‡С‘С‚, РµСЃР»Рё РІСЂРµРјСЏ РЅРµ Р·Р°РєРѕРЅС‡РёР»РѕСЃСЊ
     {
        tick();
     }
 }
 
-function AboutGame()//Переход к описанию игры
+function AboutGame()//РџРµСЂРµС…РѕРґ Рє РѕРїРёСЃР°РЅРёСЋ РёРіСЂС‹
 {
   var forma=document.getElementById('forma');
   forma.action="../RemoveBlocks/About.html";
