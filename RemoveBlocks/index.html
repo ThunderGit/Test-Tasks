@@ -161,7 +161,7 @@ function IncPoints(id)//Нажатие на кубик
 {
      var blockColor=document.getElementById(id);
      var btn=document.getElementById("start").value;
-      
+     var counter = document.getElementById("timer"); 
       // Добавление очков
       
       if(blockColor.style.backgroundColor!="white" && btn!="Resume" && seconds>=0) 
@@ -177,12 +177,17 @@ function IncPoints(id)//Нажатие на кубик
 	 }
         document.getElementById("pts").value=points;
 	
-	//Проверка надриси на кубиках 
+	//Проверка надписи на кубиках 
 	
 	if(blockColor.innerHTML!="") 
 	 {
 	  seconds+=parseInt(blockColor.innerHTML);
-          blockColor.innerHTML="";	  
+          blockColor.innerHTML="";
+	     if(blockColor.innerHTML!="0")
+	     {
+                  counter.value = (seconds/60 < 10 ? "0" : "") + String(parseInt(seconds/60))+ ":"+
+		 (seconds%60 < 10 ? "0" : "") + String(seconds%60);
+             }   
 	 }
 	 
         blockColor.style.backgroundColor="white";
