@@ -227,7 +227,8 @@ function TIMER()//Таймер
         if(seconds>0&&StartPause.value=="Pause") // Обратный отсчёт
 	{
 	seconds--;
-        counter.value = (seconds/60 < 10 ? "0" : "") + String(parseInt(seconds/60))+ ":"+ (seconds%60 < 10 ? "0" : "") + String(seconds%60);
+        counter.value = (seconds/60 < 10 ? "0" : "") + String(parseInt(seconds/60))+ ":"+ (seconds%60 < 10 ? "0" : "") +
+		String(seconds%60);
 	}
 	
         if( seconds >= 0 ) // Обратный отсчёт, если время не закончилось
