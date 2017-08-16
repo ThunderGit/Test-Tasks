@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <head>
 <title>Remove Blocks</title>
@@ -6,12 +5,12 @@
 <meta content='IE=Edge,chrome=1' http-equiv='X-UA-Compatible'>
 <meta content='width=device-width, initial-scale=1.0' name='viewport'>
 <link rel="stylesheet" media="all" href="../RemoveBlocks/bootstrap.css" />
-
-
-<style>
+	
+<style >
 input
 {
 text-align:center;
+border:1px solid black;
 }
 
 h1
@@ -19,15 +18,16 @@ h1
 margin-left:10px;
 }
 
-#start, #_NewGame, #about
+input[type=button],[type=submit]
 {
 width:120px;
     background:white; 
-    border:1px solid black;
+    border:2px solid black;
     cursor:pointer;
-    -webkit-border-radius: 5px;
-    border-radius: 5px; 
+    -webkit-border-radius: 20px;
+    border-radius: 20px; 
     text-align:center;
+    outline:none;
 }
 
 #about,#_NewGame
@@ -73,18 +73,54 @@ display:inline-break;
 {
 float:center;
 }
+
+#EnterName
+{
+width:635px;
+height:430px;
+border:4px solid #000;
+z-index:1;
+position:absolute;
+background-color:white;
+margin-left:280px;
+margin-top:60px;
+-webkit-border-radius: 20px;
+border-radius: 20px; 
+visibility:hidden;
+}
+
+#GameOver
+{
+font-size:32px;
+margin-left:4px;
+text-align:center;
+}
+
+#result,#YourNameLabel,#YourNameText,#SaveName
+{
+ font-size:32px;
+ margin-top:60px;
+ margin-left:15px;
+}
+
+#SaveName
+{
+  margin-left:255px;
+}
 </style>
-<script>
+<script type="text/javascript">
 'use strict'
 
 var points=0; //Кол-во очков игрока
 var seconds = 60; //Время (в секундах)
 
+var NamelessPlayerCount=0;//Количество безымянных игроков
 var Color=["red","green","blue","gold","magenta"]; //Цвета кубиков
 var Removed=new Array(); //Массив "убранных кубиков"
 
 function Start()//Начало Игры
 {
+
   var StartPause=document.getElementById("start");
   
   if(StartPause.value=="Start") // Старт
@@ -174,7 +210,10 @@ function NewGame() //Новая игра
 function TIMER()//Таймер 
 {
     var StartPause=document.getElementById("start");
-    var TableResult=document.getElementById("record");
+    
+    
+    var gameOverDiv=document.getElementById("EnterName");
+    var score=document.getElementById("result");
     
     function tick() 
     {
@@ -193,9 +232,8 @@ function TIMER()//Таймер
 	
 	if(seconds==0) // Конец игры
 	{
-            alert("Game Over");
-	    var Name = prompt("Score: "+points, "Player");
-	    TableResult.innerHTML+=" <br/> "+Name+": "+points;
+	    score.innerHTML="Your score: "+points;
+	    gameOverDiv.style.visibility="visible";
 	    seconds=-1;
         }
 	
@@ -230,7 +268,26 @@ function TIMER()//Таймер
        tick();
     }
 }
-
+function SetName()//Записать игрока в таблицу результатов
+{
+  var gameOverDiv=document.getElementById("EnterName");
+  var TableResult=document.getElementById("record");
+  var PlayerName=document.getElementById("YourNameText");
+  var score=document.getElementById("result");
+  
+  if(PlayerName.value!="")
+  {
+    TableResult.innerHTML+=" <br/> "+PlayerName.value+": "+points;
+  }
+  else 
+  {
+    TableResult.innerHTML+=" <br/> Player"+ ++NamelessPlayerCount +": "+points;
+  }
+  
+  gameOverDiv.style.visibility="hidden";
+  PlayerName.value="";
+  score.innerHTML="Your score: ";
+}
 function AboutGame()//Переход к описанию игры
 {
   var forma=document.getElementById('forma');
@@ -247,9 +304,9 @@ function AboutGame()//Переход к описанию игры
 
 <div class="buttons" >
 <form id="forma" method="GET">
-<input type="submit" value="How to Play" id="about" onclick="AboutGame()">
-<input type="button" value="Start" id="start" onclick="Start()">
-<input type="button" value="New Game" id="_NewGame" onclick="NewGame()">
+<input type="submit" value="How to Play" id="about" onclick="AboutGame()"/>
+<input type="button" value="Start" id="start" onclick="Start()"/>
+<input type="button" value="New Game" id="_NewGame" onclick="NewGame()"/>
 </form>
 </div>
 
@@ -262,6 +319,14 @@ function AboutGame()//Переход к описанию игры
 </div>
 <div class="field" id="field_id"> </div>
 <div id="record"><u><b>Result Table</b></u><br/>
+</div>
+<div id="EnterName">
+<p id="GameOver"><b><u>________________Game Over_________________</u></b></p>
+<p></p>
+<label id="result">Your score :</label><br/>
+<label id="YourNameLabel">Name </label>
+<input id="YourNameText" type="text" size="25"/>
+<input id="SaveName" type="button" value="Save" onclick="SetName()"/>
 </div>
 </body>
 </html>
