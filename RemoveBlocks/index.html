@@ -187,7 +187,12 @@ function IncPoints(id)//Нажатие на кубик
 	     {
                   counter.value = (seconds/60 < 10 ? "0" : "") + String(parseInt(seconds/60))+ ":"+
 		 (seconds%60 < 10 ? "0" : "") + String(seconds%60);
-             }   
+             } 
+		 
+             if(seconds<5&&blockColor.innerHTML.includes("-")==true) //Когда кол-во отнимаемых секунд больше чем оставшееся время
+             {
+	       counter.value="00:00";
+             }	
 	 }
 	 
         blockColor.style.backgroundColor="white";
@@ -260,11 +265,7 @@ function TIMER()//Таймер
                {
 	         blockColor.innerHTML=Math.round(Math.random()*10)-5;
                }
-		    
-	       if(seconds<5&&blockColor.innerHTML.includes("-")==true)
-	       {
-	         blockColor.innerHTML=blockColor.innerHTML.slice(1);
-	       }
+		
 	    }
 	    
 	  }
