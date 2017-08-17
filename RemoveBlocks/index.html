@@ -260,6 +260,11 @@ function TIMER()//Таймер
                {
 	         blockColor.innerHTML=Math.round(Math.random()*10)-5;
                }
+		    
+	       if(seconds<5&&blockColor.innerHTML.includes("-")==true)
+	       {
+	         blockColor.innerHTML=blockColor.innerHTML.slice(1);
+	       }
 	    }
 	    
 	  }
