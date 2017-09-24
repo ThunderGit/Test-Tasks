@@ -248,7 +248,7 @@ function TIMER()//Таймер
 	    seconds=-1;
         }
 	
-	if(seconds%6==0 && Removed.length>=2) // Добавление новых кубиков во время игры
+	if(seconds%6==0 && Removed.length>=2 && StartPause.value=="Pause") // Добавление новых кубиков во время игры
 	{
 	
 	  for(var i=0;i<Math.round(Math.random()*2);i++)
